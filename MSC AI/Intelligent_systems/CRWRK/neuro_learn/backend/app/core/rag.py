@@ -160,29 +160,57 @@ Answer:"""
                 )
                 
                 # Generate answer
-                try:
-                    formatted_prompt = prompt.format(
-                        context=retrieved_context,
-                        additional_context=context,
-                        question=question
-                    )
-                    
-                    response = self.llm.invoke(formatted_prompt)
-                    content = self._extract_content(response)
-                    
-                    return {
-                        "answer": content,
-                        "sources": docs,
-                        "in_knowledge_base": True
-                    }
-                except Exception as e:
-                    print(f"⚠️ LLM invocation failed: {e}")
-                    # Fall through to web search
-                    has_relevant_docs = False
+                max_retries = 2
+                retry_delay = 5
+                
+                for attempt in range(max_retries):
+                    try:
+                        formatted_prompt = prompt.format(
+                            context=retrieved_context,
+                            additional_context=context,
+                            question=question
+                        )
+                        
+                        response = self.llm.invoke(formatted_prompt)
+                        content = self._extract_content(response)
+                        
+                        return {
+                            "answer": content,
+                            "sources": docs,
+                            "in_knowledge_base": True
+                        }
+                    except Exception as e:
+                        error_msg = str(e)
+                        if '429' in error_msg or 'rate' in error_msg.lower() or 'quota' in error_msg.lower():
+                            # Rate limit error - retry after delay
+                            if attempt < max_retries - 1:
+                                import time
+                                print(f"⏸️  Rate limited. Waiting {retry_delay}s before retry {attempt + 2}/{max_retries}...")
+                                time.sleep(retry_delay)
+                                retry_delay *= 2  # Exponential backoff
+                                continue
+                            else:
+                                # Final retry failed - return friendly message with sources
+                                print(f"⚠️ Rate limit persists after {max_retries} attempts")
+                                return {
+                                    "answer": f"I found relevant information in the course materials, but the system is currently experiencing high demand. Please try again in a few moments.\n\n**Found in**: {', '.join(set([os.path.basename(doc.metadata.get('source', 'Unknown')) for doc in docs[:3]]))}",
+                                    "sources": docs,
+                                    "in_knowledge_base": True
+                                }
+                        else:
+                            # Non-rate-limit error
+                            print(f"⚠️ LLM error: {error_msg[:200]}")
+                            # Still return what we found, don't fall back to web if we have docs
+                            sources_list = [f"{os.path.basename(doc.metadata.get('source', 'Unknown'))} (Page {doc.metadata.get('page', 'N/A')})" for doc in docs[:5]]
+                            return {
+                                "answer": f"I found relevant course materials but encountered a technical issue processing them. Here's what I found:\n\n**Sources**: {', '.join(set(sources_list))}\n\nPlease try rephrasing your question or try again in a moment.",
+                                "sources": docs,
+                                "in_knowledge_base": True
+                            }
             
-            # Step 3: If knowledge base failed or had no results, use web search
+            # Step 3: ONLY use web search if we truly found NO documents
             if not has_relevant_docs:
-                print("📡 Falling back to web search...")
+                print("📡 No course materials found. Falling back to web search...")
                 web_answer, web_urls = self._web_search_fallback(question)
                 
                 if web_answer:
