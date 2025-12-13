@@ -1,0 +1,44 @@
+// PREPARE DATA
+// - Detect 'Diabetes' (case-insensitive) as label
+// - Use all other columns as features
+// - Cast values to numbers (non-numeric -> 0)
+
+const rows = items.map(i => i.json);
+if (!rows.length) {
+  throw new Error("No rows from CSV. Check the Extract From File node.");
+}
+
+// Find label column named 'Diabetes' (case-insensitive)
+const sample = rows[0];
+const labelName = Object.keys(sample).find(k => k.toLowerCase() === 'diabetes');
+if (!labelName) {
+  throw new Error("Couldn't find a 'Diabetes' column in the CSV header.");
+}
+
+// Features = all columns except label
+const featureNames = Object.keys(sample).filter(k => k !== labelName);
+
+// Safe numeric cast
+const toNum = (v) => {
+  const n = Number(v);
+  return Number.isFinite(n) ? n : 0;
+};
+
+// Build matrices
+const X = rows.map(r => featureNames.map(f => toNum(r[f])));
+const y = rows.map(r => toNum(r[labelName]));
+
+if (!X.length || !X[0].length) {
+  throw new Error("No features detected. Check your CSV content.");
+}
+
+return [{
+  json: {
+    featureNames,
+    labelName,
+    X,
+    y,
+    nSamples: X.length,
+    nFeatures: featureNames.length
+  }
+}];

@@ -1,0 +1,64 @@
+/**
+ * INPUT (Webhook JSON body): feature fields with the same names as your CSV header (except 'Diabetes')
+ * Example body:
+ * {
+ *   "HighBP":1, "HighChol":1, "CholCheck":1, "BMI":30,
+ *   "Smoker":0, "Stroke":0, "HeartDiseaseorAttack":0, "PhysActivity":1,
+ *   "Fruits":1, "Veggies":1, "HvyAlcoholConsump":0, "AnyHealthcare":1,
+ *   "NoDocbcCost":0, "GenHlth":3, "MentHlth":2, "PhysHlth":1, "DiffWalk":0,
+ *   "Sex":0, "Age":9, "Education":4, "Income":6
+ * }
+ * ACTIONS:
+ *   - Load model from workflow static data
+ *   - Standardize input with stored scaler
+ *   - Predict with stored K and training set
+ */
+
+const body = $json; // webhook body parsed as JSON
+
+// Load stored model
+const store = $getWorkflowStaticData('global');
+if (!store.model) {
+  throw new Error("Model not found. Train first by calling /diabetes-upload.");
+}
+const { featureNames, scaler, Xt, yt, bestK } = store.model;
+
+// Helper: z-score
+function z(row, mean, stdev){
+  const out = [];
+  for (let j=0;j<row.length;j++){
+    const s = stdev[j] || 1;
+    out.push((row[j] - mean[j]) / s);
+  }
+  return out;
+}
+// Distance + KNN
+function dist(a,b){ let s=0; for(let i=0;i<a.length;i++) s+=(a[i]-b[i])**2; return Math.sqrt(s); }
+function knnPredict(trainX, trainY, xNew, k){
+  const d = trainX.map((row,i)=>({i, d: dist(row, xNew)})).sort((a,b)=>a.d-b.d).slice(0,k);
+  const counts = new Map();
+  for (const n of d){ const c = trainY[n.i]; counts.set(c,(counts.get(c)||0)+1); }
+  let best=null, bc=-1; for (const [c,v] of counts.entries()) if (v>bc){ best=c; bc=v; }
+  return Number(best);
+}
+
+// Build numeric vector in the right order
+const toNum = v => Number.isFinite(Number(v)) ? Number(v) : 0;
+const xRaw = featureNames.map(f => toNum(body[f]));
+
+// Standardize with stored scaler
+const xZ = z(xRaw, scaler.mean, scaler.stdev);
+
+// Predict
+const pred = knnPredict(Xt, yt, xZ, bestK);
+
+return [{
+  json: {
+    ok: true,
+    usedK: bestK,
+    featuresOrder: featureNames,
+    input: body,
+    prediction: pred,
+    predictionLabel: pred ? "Diabetes: YES (1)" : "Diabetes: NO (0)"
+  }
+}];

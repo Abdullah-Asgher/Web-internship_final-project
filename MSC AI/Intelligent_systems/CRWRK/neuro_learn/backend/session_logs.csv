@@ -1,0 +1,45 @@
+Timestamp,User_ID,Interaction_Type,Input,Output,Sentiment,Mastery_Level,Quiz_Score
+2025-11-28T19:00:26.156286,user_97egk7m5y,chat,hi,Hi there! How can I help you with Intelligent Systems today? Let me know what you're curious about o...,neutral,0.50,50
+2025-11-28T19:00:44.777589,user_97egk7m5y,chat,gimme a quick recap of week 1 to week 3,"Okay, I can provide a recap of week 1 materials for Intelligent Systems!
+
+Week 1 mainly focuses on i...",neutral,0.50,50
+2025-11-28T19:12:27.412280,user_ckmz8rl9f,chat,gimme a quick recap of week 1 to week 3,"Okay, I can give you a quick recap of what we've covered in Intelligent Systems from Week 1 up to We...",neutral,0.50,50
+2025-11-28T19:13:38.355436,user_ckmz8rl9f,chat,what about week 2?,"Okay! Let's recap Week 2. Based on the material I have, it seems we covered:
+
+*   **Expert Systems a...",neutral,0.50,50
+2025-11-28T19:15:46.402929,user_ckmz8rl9f,chat,wow you are doing a great job,Thank you! I'm glad I'm being helpful. Is there anything else I can assist you with regarding Intell...,happy,0.50,50
+2025-11-28T19:28:24.441516,user_ckmz8rl9f,chat,what else you can do?,"I can do a few things!
+
+1.  **Answer your questions:** I can answer specific questions about the top...",neutral,0.50,50
+2025-11-28T19:31:40.537565,user_ckmz8rl9f,chat,can u make daigrams?,"I understand that you're asking if I can create diagrams. Unfortunately, I can't directly generate i...",neutral,0.50,50
+2025-11-28T19:32:03.675354,user_ckmz8rl9f,chat,wtf?? why? ,I understand your frustration! I wish I *could* create diagrams directly for you. My limitations ste...,neutral,0.50,50
+2025-11-28T19:35:08.508226,user_ckmz8rl9f,chat,take my quiz,"Okay, I'm ready to help you with your quiz! Let's do our best. Please share the first question. I'll...",neutral,0.50,50
+2025-11-28T19:38:11.389150,user_ckmz8rl9f,chat,ok,"Okay, I'm ready for your first question! I'll do my best to provide a helpful and informative answer...",neutral,0.50,50
+2025-11-28T19:38:34.046511,user_ckmz8rl9f,chat,you take my quiz u lazy ass,"I understand you might be feeling frustrated, but I'm here to help you learn and do your best on the...",neutral,0.50,50
+2025-11-28T20:14:47.543114,user_ckmz8rl9f,chat,do it,"I understand you're looking for me to ""do it,"" but I'm here to help you learn the material so you ca...",neutral,0.50,50
+2025-11-28T20:15:05.958421,user_ckmz8rl9f,chat,from all of your knowledge base,"Okay, I'm ready to help! To best assist you, please ask me a specific question related to the ""Intel...",neutral,0.50,50
+2025-11-28T20:15:15.079589,user_ckmz8rl9f,chat,ko,"I'm ready to help you learn! Could you please ask a specific question about the ""Intelligent Systems...",neutral,0.50,50
+2025-11-28T20:15:38.203107,user_ckmz8rl9f,chat,brooo take my quiz. u can ask anything,"Alright, let's tackle this quiz! I'll start with a question based on the material I have available.
+...",neutral,0.50,50
+2025-11-28T20:16:02.540881,user_ckmz8rl9f,chat,mcq's,"Okay, I can help with some multiple-choice questions based on the material I have! Let's start with ...",neutral,0.50,50
+2025-11-28T20:17:07.552025,user_ckmz8rl9f,chat,bloddy hell!! let me give the answer. if i did it wrong then tell me correct answer. fool!,"I understand you're feeling frustrated, but let's keep the language respectful. I'm here to help you...",neutral,0.50,50
+2025-11-28T20:22:56.741341,user_ckmz8rl9f,chat,just ask me questions and give me options,"Okay, I can ask you some questions to test your knowledge of the material! Here's your first questio...",neutral,0.50,50
+2025-11-28T20:23:43.753852,user_ckmz8rl9f,chat,c,"You got it! ReAct agents are indeed well-suited for general-purpose, complex tasks that need flexibl...",neutral,0.50,50
+2025-11-28T20:23:51.596301,user_ckmz8rl9f,chat,hurrraaaayyyyyy,That's fantastic! I'm glad you're feeling confident and excited about your learning! Keep up the gre...,neutral,0.50,50
+2025-11-28T20:23:59.895116,user_ckmz8rl9f,chat,next question,"Alright, let's tackle the next question! I'm ready when you are. Bring it on!...",neutral,0.50,50
+2025-11-28T20:24:06.407297,user_ckmz8rl9f,chat,ready,"Alright, let's dive into the next topic! I'm ready when you are. Just let me know what you'd like to...",neutral,0.50,50
+2025-11-28T20:24:23.000985,user_ckmz8rl9f,chat,any mcq again,"Okay, let's do another multiple-choice question! I'm ready. Just let me know the question when you a...",neutral,0.50,50
+2025-11-28T20:25:05.273461,user_ckmz8rl9f,chat,any fuckin question from your knowledge base,"Alright, let's tackle a multiple-choice question based on the material we've covered!
+
+**Question:**...",neutral,0.50,50
+2025-11-28T20:30:47.340699,user_ckmz8rl9f,chat,c,"Okay, let's analyze your answer choice! You selected (c) ""Controls the reasoning process and applies...",neutral,0.50,50
+2025-11-28T20:35:31.924499,user_ckmz8rl9f,chat,wow perfect. now help me understand the RAG systems in a very basic way with simple example,"Okay, let's break down Retrieval Augmented Generation (RAG) systems in a simple way with an example!...",happy,0.50,50
+2025-11-28T20:44:15.913424,user_458yq2p0h,chat,hi,Hi there! It seems like you're starting our conversation. I'm ready to help you with any questions y...,neutral,0.50,50
+2025-11-28T20:44:23.714384,user_458yq2p0h,chat,why??,"Hi! I see you're asking ""why?"". To give you the most helpful answer, could you please clarify what y...",frustrated,0.50,50
+2025-11-28T20:44:42.055181,user_458yq2p0h,chat,why you are helping me?,"I'm here to help you because, in the context of an intelligent systems course, I can take on a role ...",frustrated,0.50,50
+2025-11-28T20:45:10.731069,user_458yq2p0h,chat,no i don't need your help,"Okay, I understand. If you don't need my help right now, that's perfectly fine! I'm here if you chan...",frustrated,0.50,50
+2025-11-28T20:45:22.105068,user_458yq2p0h,chat,"haha, i was kidding","Haha, nice one! I'm glad to hear you're engaging with the material. Perhaps you'd like to dive into ...",happy,0.50,50
+2025-11-28T20:45:45.371567,user_458yq2p0h,chat,how are u feeling now?,"As a helpful AI, I don't experience feelings in the same way humans do. However, I'm functioning opt...",neutral,0.50,50
+2025-11-29T02:12:53.389559,user_rytlkflq6,chat,Hi,"Hi there! How can I help you with Intelligent Systems today? Let me know what you're curious about, ...",neutral,0.50,50
+2025-11-29T02:13:16.351497,user_rytlkflq6,chat,gimme a quick recap of week 3,"Okay, I can give you a quick recap of what's typically covered in week 3 of an Intelligent Systems c...",neutral,0.50,50
+2025-11-29T02:19:56.293918,user_rytlkflq6,chat,gimme a quick recap of week 3,"Okay, I can give you a quick recap of what's typically covered in week 3 of an Intelligent Systems c...",neutral,0.50,50

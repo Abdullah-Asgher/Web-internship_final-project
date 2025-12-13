@@ -1,0 +1,56 @@
+// SPLIT & SCALE
+// - Deterministic shuffle (seed=42)
+// - 80/20 split
+// - Fit z-score scaler on TRAIN only; apply to both TRAIN and TEST
+
+const { featureNames, labelName, X, y } = items[0].json;
+const testRatio = 0.2;
+const seed = 42;
+
+// Deterministic RNG
+let s = seed;
+const rng = () => (s = (s*1664525 + 1013904223) % 4294967296) / 4294967296;
+
+// Shuffle indices
+const idx = Array.from({ length: X.length }, (_, i) => i);
+for (let i = idx.length - 1; i > 0; i--) {
+  const j = Math.floor(rng() * (i + 1));
+  [idx[i], idx[j]] = [idx[j], idx[i]];
+}
+
+// Split
+const splitAt = Math.floor(X.length * (1 - testRatio));
+const trainIdx = idx.slice(0, splitAt);
+const testIdx  = idx.slice(splitAt);
+
+const Xt = trainIdx.map(i => X[i]);
+const yt = trainIdx.map(i => y[i]);
+const Xv = testIdx.map(i => X[i]);
+const yv = testIdx.map(i => y[i]);
+
+// Fit scaler on TRAIN
+const d = featureNames.length;
+const mean = Array(d).fill(0);
+const stdev = Array(d).fill(0);
+
+// mean
+for (const row of Xt) for (let j=0;j<d;j++) mean[j] += row[j];
+for (let j=0;j<d;j++) mean[j] /= Xt.length;
+
+// std
+for (const row of Xt) for (let j=0;j<d;j++) stdev[j] += (row[j] - mean[j])**2;
+for (let j=0;j<d;j++) stdev[j] = Math.sqrt(stdev[j] / Math.max(1, Xt.length - 1)) || 1;
+
+// apply z-score
+const z = (row) => row.map((v,j) => (v - mean[j]) / (stdev[j] || 1));
+const XtZ = Xt.map(z);
+const XvZ = Xv.map(z);
+
+return [{
+  json: {
+    featureNames, labelName,
+    train: { X: XtZ, y: yt, size: XtZ.length },
+    test:  { X: XvZ, y: yv, size: XvZ.length },
+    scaler: { mean, stdev }
+  }
+}];

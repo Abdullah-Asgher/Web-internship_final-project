@@ -1,0 +1,66 @@
+// TRAIN & EVALUATE (KNN)
+// - Grid search k
+// - Report best k, test accuracy, confusion matrix
+// - Also return train accuracy (sanity check)
+
+const { featureNames, train, test } = items[0].json;
+const { X: Xt, y: yt } = train;
+const { X: Xv, y: yv } = test;
+
+function dist(a,b){ let s=0; for(let i=0;i<a.length;i++) s += (a[i]-b[i])**2; return Math.sqrt(s); }
+function knnPredict(trainX, trainY, xNew, k=3){
+  const dists = trainX.map((row, i) => ({ i, d: dist(row, xNew) }));
+  dists.sort((a,b) => a.d - b.d);
+  const kNN = dists.slice(0, k);
+  const counts = new Map();
+  for (const n of kNN) {
+    const cls = trainY[n.i];
+    counts.set(cls, (counts.get(cls) || 0) + 1);
+  }
+  let best=null, bestCnt=-1;
+  for (const [c,v] of counts.entries()) if (v>bestCnt){ best=c; bestCnt=v; }
+  return Number(best);
+}
+
+function evaluate(trainX, trainY, XX, YY, k){
+  let correct = 0;
+  const yPred = [];
+  for (let i=0;i<XX.length;i++){
+    const p = knnPredict(trainX, trainY, XX[i], k);
+    yPred.push(p);
+    if (p === YY[i]) correct++;
+  }
+  const acc = XX.length ? correct / XX.length : 0;
+
+  // confusion matrix
+  const labels = Array.from(new Set([...YY, ...yPred])).sort((a,b)=>a-b);
+  const L = labels.length, idx = new Map(labels.map((v,i)=>[v,i]));
+  const cm = Array.from({length:L},()=>Array(L).fill(0));
+  for (let i=0;i<YY.length;i++) cm[idx.get(YY[i])][idx.get(yPred[i])]++;
+
+  return { acc, cm, labels };
+}
+
+const kGrid = [1,3,5,7,9,11,15,21,31,41,51];
+let best = { k: null, acc: -1, cm: null, labels: [] };
+
+for (const k of kGrid) {
+  const r = evaluate(Xt, yt, Xv, yv, k);
+  if (r.acc > best.acc) best = { k, acc: r.acc, cm: r.cm, labels: r.labels };
+}
+
+// quick train accuracy (overfit gauge)
+const trainEval = evaluate(Xt, yt, Xt, yt, best.k);
+
+return [{
+  json: {
+    model: "KNN",
+    nTrain: Xt.length,
+    nTest: Xv.length,
+    bestK: best.k,
+    testAccuracy: best.acc,
+    trainAccuracy: trainEval.acc,
+    labels: best.labels,
+    confusionMatrix: best.cm
+  }
+}];

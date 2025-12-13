@@ -1,0 +1,8 @@
+--Test 
+curl -X POST "https://ueltest.app.n8n.cloud/webhook-Test/diabetes-upload" \
+  -F "file=@C:/Users/HP/Desktop/Perso/UEL/HPL/CN7050 IS/KNN/diabetes.csv"
+
+
+-- Production 
+curl -X POST "https://ueltest.app.n8n.cloud/webhook/diabetes-upload" \
+  -F "file=@C:/Users/HP/Desktop/Perso/UEL/HPL/CN7050 IS/KNN/diabetes.csv"
