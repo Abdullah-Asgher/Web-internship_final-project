@@ -93,9 +93,19 @@ Answer:"""
         
         response = self.llm.invoke(formatted_prompt)
         
+        # Handle response content (can be string or list of content blocks)
         content = response.content
         if isinstance(content, list):
-            content = " ".join([str(item) for item in content])
+            # Extract text from content blocks (e.g., [{'type': 'text', 'text': '...'}])
+            text_parts = []
+            for item in content:
+                if isinstance(item, dict) and 'text' in item:
+                    text_parts.append(item['text'])
+                elif isinstance(item, str):
+                    text_parts.append(item)
+                else:
+                    text_parts.append(str(item))
+            content = " ".join(text_parts)
         
         return {
             "answer": content,
