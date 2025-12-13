@@ -121,11 +121,28 @@ async def chat(request: ChatRequest):
             } for doc in tutor_response['sources'][:3]]
         )
         
+    except ValueError as e:
+        # Handle specific validation errors
+        error_msg = "I had trouble understanding your question. Could you please rephrase it?"
+        print(f"ValueError in /chat endpoint: {str(e)}")
+        return ChatResponse(
+            response=error_msg,
+            sentiment="neutral",
+            next_action="continue",
+            sources=[]
+        )
     except Exception as e:
+        # Catch-all for any errors - never show technical details to students
+        error_msg = "I apologize, but I encountered a temporary issue. Please try asking your question again."
         print(f"ERROR in /chat endpoint: {str(e)}")
         import traceback
         traceback.print_exc()
-        raise HTTPException(status_code=500, detail=str(e))
+        return ChatResponse(
+            response=error_msg,
+            sentiment="neutral",
+            next_action="continue",
+            sources=[]
+        )
 
 @app.post("/quiz")
 async def generate_quiz(request: QuizRequest):
