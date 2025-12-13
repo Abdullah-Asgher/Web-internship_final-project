@@ -4,7 +4,7 @@ Handles knowledge retrieval from the vector database
 """
 from langchain_community.vectorstores import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
 import os
 
@@ -17,14 +17,14 @@ class RAGSystem:
             embedding_function=self.embeddings
         )
         
-        # Initialize the LLM (Gemini)
-        api_key = os.getenv("GOOGLE_API_KEY")
+        # Initialize the LLM (OpenAI GPT)
+        api_key = os.getenv("OPENAI_API_KEY")
         if not api_key:
-            raise ValueError("GOOGLE_API_KEY not found in environment")
+            raise ValueError("OPENAI_API_KEY not found in environment")
             
-        self.llm = ChatGoogleGenerativeAI(
-            model="gemini-flash-latest",
-            google_api_key=api_key,
+        self.llm = ChatOpenAI(
+            model="gpt-3.5-turbo",
+            openai_api_key=api_key,
             temperature=0.7
         )
         
