@@ -1,10 +1,14 @@
 import os
 import google.generativeai as genai
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 api_key = os.getenv("GOOGLE_API_KEY")
 if not api_key:
-    print("API Key not found in env, using the one from user...")
-    api_key = "AIzaSyBBm9vmZ8fMMgykgRUXarT-dAerJ84w51o"
+    # Fallback or error
+    print("API Key not found in env!")
 
 print(f"Configuring with API Key: {api_key[:10]}...")
 genai.configure(api_key=api_key)

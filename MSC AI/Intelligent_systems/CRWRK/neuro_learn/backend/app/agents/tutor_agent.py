@@ -14,7 +14,7 @@ class TutorAgent:
         # Sentiment analysis LLM
         api_key = os.getenv("GOOGLE_API_KEY")
         self.sentiment_llm = ChatGoogleGenerativeAI(
-            model="gemini-1.5-flash",
+            model="gemini-flash-latest",
             google_api_key=api_key,
             temperature=0.3
         )

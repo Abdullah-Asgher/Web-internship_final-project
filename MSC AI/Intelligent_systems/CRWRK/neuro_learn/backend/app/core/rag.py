@@ -23,7 +23,7 @@ class RAGSystem:
             raise ValueError("GOOGLE_API_KEY not found in environment")
             
         self.llm = ChatGoogleGenerativeAI(
-            model="gemini-2.0-flash",
+            model="gemini-flash-latest",
             google_api_key=api_key,
             temperature=0.7
         )
