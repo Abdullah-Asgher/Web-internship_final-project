@@ -9,6 +9,9 @@ from app.agents.tutor_agent import TutorAgent
 from app.agents.curriculum_manager import CurriculumManager
 import uvicorn
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = FastAPI(title="NeuroLearn API", version="1.0.0")
 
