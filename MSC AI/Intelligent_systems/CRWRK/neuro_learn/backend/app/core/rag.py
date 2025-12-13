@@ -93,8 +93,12 @@ Answer:"""
         
         response = self.llm.invoke(formatted_prompt)
         
+        content = response.content
+        if isinstance(content, list):
+            content = " ".join([str(item) for item in content])
+        
         return {
-            "answer": response.content,
+            "answer": content,
             "sources": docs,
             "in_knowledge_base": len(docs) > 0 and docs[0].metadata
         }
