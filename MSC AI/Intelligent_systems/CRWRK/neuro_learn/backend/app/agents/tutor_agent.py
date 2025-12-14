@@ -3,7 +3,7 @@ Tutor Agent - The conversational AI tutor
 Combines RAG with sentiment analysis
 """
 from app.core.rag import RAGSystem
-from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 import os
 import re
 
@@ -12,10 +12,10 @@ class TutorAgent:
         self.rag = RAGSystem()
         
         # Sentiment analysis LLM
-        api_key = os.getenv("OPENAI_API_KEY")
-        self.sentiment_llm = ChatOpenAI(
-            model="gpt-3.5-turbo",
-            openai_api_key=api_key,
+        api_key = os.getenv("GOOGLE_API_KEY")
+        self.sentiment_llm = ChatGoogleGenerativeAI(
+            model="gemini-flash-latest",
+            google_api_key=api_key,
             temperature=0.3
         )
         
